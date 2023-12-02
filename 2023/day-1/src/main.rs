@@ -58,12 +58,13 @@ fn to_elf_digit(input: String, i: usize) -> (u32, bool) {
     }
 
     let digits = populate_digits();
+    let input_from_i = &input[i..];
     for digit in digits {
-        let position: usize = match input.find(&digit.1) {
+        let position: usize = match input_from_i.find(&digit.1) {
             None => continue,
             Some(position) => position,
         };
-        if position == i {
+        if position == 0 {
             println!("=> at {} found {}", position, digit.1);
             return (digit.0, true);
         }
