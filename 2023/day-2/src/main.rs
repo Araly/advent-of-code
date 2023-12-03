@@ -4,7 +4,8 @@ fn main() {
     let input = get_input();
     let games: Vec<&str> = input.split("\n").collect();
 
-    let mut sum = 0;
+    let mut sum_of_possible_games = 0;
+    let mut sum_of_powers = 0;
     for game in games {
         if game == "" {
             continue;
@@ -13,10 +14,12 @@ fn main() {
         let is_possible = is_possible(&game);
 
         if is_possible {
-            sum += game.id;
+            sum_of_possible_games += game.id;
         }
+
+        sum_of_powers += power_of_game(&game);
     }
-    println!("total: {sum}");
+    println!("total of possibles: {sum_of_possible_games}\ntotal of powers: {sum_of_powers}");
 }
 
 fn print_game(game: Game) {
@@ -115,4 +118,23 @@ fn is_possible(game: &Game) -> bool {
         }
     }
     return true;
+}
+
+fn power_of_game(game: &Game) -> u32 {
+    let mut minimum_red = 0;
+    let mut minimum_green = 0;
+    let mut minimum_blue = 0;
+    for run in &game.runs {
+        if run.red > minimum_red {
+            minimum_red = run.red;
+        }
+        if run.green > minimum_green {
+            minimum_green = run.green;
+        }
+        if run.blue > minimum_blue {
+            minimum_blue = run.blue;
+        }
+    }
+
+    return minimum_red * minimum_green * minimum_blue;
 }
